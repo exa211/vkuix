@@ -1,0 +1,40 @@
+cmake_minimum_required(VERSION 3.29.3)
+project(vkuix)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "-O3 -pipe -mavx2")
+
+# VULKAN
+set(ENV{VULKAN_SDK} "C:/VulkanSDK/1.3.290.0")
+find_package(Vulkan REQUIRED)
+include_directories(${Vulkan_INCLUDE_DIRS})
+# VMA
+add_subdirectory(lib/VulkanMemoryAllocator)
+include_directories(lib/VulkanMemoryAllocator/include)
+
+# GLFW
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory(lib/glfw)
+include_directories(lib/glfw/include/GLFW)
+
+add_executable(vkuix
+    main.cpp
+
+    common.h
+    log.h
+
+    vulkan_backend.h
+    vulkan_backend.cpp
+
+    window.h
+    window.cpp
+  image_types.h
+)
+
+target_link_libraries(vkuix 
+    ${Vulkan_LIBRARIES} 
+    VulkanMemoryAllocator
+    glfw
+)
