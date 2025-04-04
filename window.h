@@ -12,12 +12,7 @@
 class Window {
 public:
 
-  Window(const char* windowTitle, int width, int height) {
-    if(glfwInit()) {
-      glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-      windowPtr = std::make_unique<GLFWwindow*>(glfwCreateWindow(width, height, windowTitle, nullptr, nullptr));
-    }
-  }
+  Window(const char* windowTitle, int width, int height);
 
   void show() const;
 

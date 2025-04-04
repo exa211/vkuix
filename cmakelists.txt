@@ -20,21 +20,21 @@ add_subdirectory(lib/glfw)
 include_directories(lib/glfw/include/GLFW)
 
 add_executable(vkuix
-    main.cpp
+  main.cpp
 
-    common.h
-    log.h
+  common.h
+  log.h
 
-    vulkan_backend.h
-    vulkan_backend.cpp
+  vulkan_backend.h
+  vulkan_backend.cpp
 
-    window.h
-    window.cpp
+  window.h
+  window.cpp
   image_types.h
 )
 
-target_link_libraries(vkuix 
-    ${Vulkan_LIBRARIES} 
-    VulkanMemoryAllocator
-    glfw
+target_link_libraries(vkuix
+  ${Vulkan_LIBRARIES}
+  VulkanMemoryAllocator
+  glfw
 )

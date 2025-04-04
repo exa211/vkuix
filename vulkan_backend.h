@@ -3,11 +3,14 @@
 #include "vma/vk_mem_alloc.h"
 
 #include "window.h"
-
 #include "common.h"
 #include "image_types.h"
 
 namespace VkBackend {
+
+  const std::vector VAL_LAYERS = {
+    "VK_LAYER_KHRONOS_validation"
+  };
 
   const std::vector DEVICE_EXT = {
       VK_KHR_SWAPCHAIN_EXTENSION_NAME,
@@ -42,7 +45,9 @@ namespace VkBackend {
     VkSurfaceKHR surface{};
     VkPhysicalDevice physDevice{};
     VkDevice device{};
+
     QueueFamilyInfo queueFamilies;
+    VkQueue graphicsQueue{};
 
     VmaAllocator allocator{};
 
@@ -55,5 +60,8 @@ namespace VkBackend {
   void setupVMA(Instance &instance);
   void setupQueues(Instance &instance);
   void setupSwapchain(const Window & window, Instance& instance, bool resize);
+
+  void createCommandpool(Instance &instance, VkCommandPool& pool, VkCommandPoolCreateFlags flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT);
+  void createCommandbuffer(const Instance & instance, const VkCommandPool & pool, VkCommandBuffer& buffer);
 
 } // namespace VkBackend

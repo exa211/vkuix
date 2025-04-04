@@ -7,7 +7,7 @@
 int main() {
 
   // Setup the glfw window.
-  Window w{"vkuix", 1050, 600};
+  const Window w{"vkuix", 1050, 600};
 
   // Get all required extensions from glfw and add our own.
   u32 EXT_COUNT = 0;
@@ -21,6 +21,11 @@ int main() {
   VkBackend::setupDevices(engine); // Choose best suitable physical rendering device
   VkBackend::setupVMA(engine);
   VkBackend::setupSwapchain(w, engine, false);
+
+  VkCommandPool cmdPool{};
+  VkBackend::createCommandpool(engine, cmdPool);
+  VkCommandBuffer cmdBuffer{};
+  VkBackend::createCommandbuffer(engine, cmdPool, cmdBuffer);
 
   w.show();
 

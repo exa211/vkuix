@@ -1,6 +1,7 @@
 #define VMA_IMPLEMENTATION
 #include "vulkan_backend.h"
 
+#include <ranges>
 #include <set>
 
 void VkBackend::setupInstance(Instance &instance, const std::vector<const char *> &extensions) {
@@ -22,6 +23,8 @@ void VkBackend::setupInstance(Instance &instance, const std::vector<const char *
   instanceCreateInfo.pApplicationInfo = &appInfo;
   instanceCreateInfo.ppEnabledExtensionNames = extensions.data();
   instanceCreateInfo.enabledExtensionCount = extensions.size();
+  instanceCreateInfo.ppEnabledLayerNames = VAL_LAYERS.data();
+  instanceCreateInfo.enabledLayerCount = VAL_LAYERS.size();
   instanceCreateInfo.pNext = &debugInfo; // Custom debugger
 
   // Create VkInstance with custom debugger
@@ -209,3 +212,33 @@ void VkBackend::setupSwapchain(const Window &window, Instance &instance, const b
                                 .append(" and PresentMode: ")
                                 .append(std::to_string(instance.swapchain.presentMode)));
 }
+
+void VkBackend::createCommandpool(
+  Instance& instance,
+  VkCommandPool &pool,
+  const VkCommandPoolCreateFlags flags)
+{
+  const QueueFamilyInfo& queueInfo = instance.queueFamilies;
+
+  vkGetDeviceQueue(instance.device, queueInfo.graphicsFamily.value(), 0, &instance.graphicsQueue);
+
+  VkCommandPoolCreateInfo cmdPoolInfo{VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO};
+  cmdPoolInfo.flags = flags;
+  cmdPoolInfo.queueFamilyIndex = queueInfo.graphicsFamily.value();
+
+  if (vkCreateCommandPool(instance.device, &cmdPoolInfo, nullptr, &pool) != VK_SUCCESS) {
+    LOG(F, "Could not create VkCommandPool.");
+  }
+}
+
+void VkBackend::createCommandbuffer(const Instance &instance, const VkCommandPool & pool, VkCommandBuffer &buffer) {
+  VkCommandBufferAllocateInfo allocInfo{VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO};
+  allocInfo.commandPool = pool;
+  allocInfo.commandBufferCount = 1;
+  allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+  if (vkAllocateCommandBuffers(instance.device, &allocInfo, &buffer) != VK_SUCCESS) {
+    LOG(F, "Could not allocate VkCommandBuffer.");
+  }
+}
+
+
