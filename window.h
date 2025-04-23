@@ -9,19 +9,25 @@
 
 #include "common.h"
 
-class Window {
-public:
 
-  Window(const char* windowTitle, int width, int height);
+namespace VKUIX {
 
-  void show() const;
+  class Window {
+  public:
 
-  [[nodiscard]] GLFWwindow* getWindowPtr() const;
-  [[nodiscard]] VkExtent2D getExtent() const;
+    Window(const char* windowTitle, int width, int height);
 
-private:
-  int width;
-  int height;
+    void show() const;
 
-  uptr<GLFWwindow*> windowPtr;
-};
+    [[nodiscard]] GLFWwindow* getWindowPtr() const;
+    [[nodiscard]] VkExtent2D getExtent() const;
+    [[nodiscard]] VkRect2D getRenderArea() const;
+
+  private:
+    int width;
+    int height;
+
+    uptr<GLFWwindow*> windowPtr;
+  };
+
+}

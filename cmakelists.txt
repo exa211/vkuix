@@ -8,9 +8,14 @@ set(CMAKE_CXX_FLAGS "-O3 -pipe -mavx2")
 set(ENV{VULKAN_SDK} "C:/VulkanSDK/1.3.290.0")
 find_package(Vulkan REQUIRED)
 include_directories(${Vulkan_INCLUDE_DIRS})
+link_directories(${VULKAN_SDK}/Lib)
+
 # VMA
 add_subdirectory(lib/VulkanMemoryAllocator)
 include_directories(lib/VulkanMemoryAllocator/include)
+
+# GLM
+add_subdirectory(lib/glm)
 
 # GLFW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
@@ -31,10 +36,17 @@ add_executable(vkuix
   window.h
   window.cpp
   image_types.h
+  shader.cpp
+  shader.h
+  buffer.h
+  vkuix.cpp
+  vkuix.h
 )
 
-target_link_libraries(vkuix
+target_link_libraries(vkuix PRIVATE
   ${Vulkan_LIBRARIES}
   VulkanMemoryAllocator
   glfw
+  glm
+  dwmapi
 )
