@@ -19,8 +19,37 @@ using uptr = std::unique_ptr<T>;
 template <typename T>
 using sptr = std::shared_ptr<T>;
 
-struct Transform {
-  glm::vec3 pos{0.0f};
-  glm::vec3 scale{1.0f};
-  glm::vec3 rotation{0.0f};
-};
+namespace VKUIX {
+
+  struct Dim {
+    u32 width;
+    u32 height;
+  };
+
+  struct Transform {
+    glm::vec3 pos{0.0f};
+    glm::vec3 scale{1.0f};
+    glm::vec3 rotation{0.0f};
+  };
+
+  struct Color {
+    float r;
+    float g;
+    float b;
+    float a;
+
+    Color toDecimal() {
+      r = r/255.0f;
+      g = g/255.0f;
+      b = b/255.0f;
+      a = a/255.0f;
+      return *this;
+    }
+
+    [[nodiscard]] glm::vec4 glmDecimal() const {
+      return {r/255.0f, g/255.0f, b/255.0f, a/255.0f};
+    }
+
+  };
+
+}

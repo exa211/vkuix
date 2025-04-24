@@ -13,6 +13,7 @@ namespace VkBackend {
 
   inline constexpr bool VALIDATION = false;
   inline constexpr VkSampleCountFlagBits ANTI_ALIASING_COUNT = VK_SAMPLE_COUNT_8_BIT;
+  inline constexpr VkFormat COLOR_FORMAT = VK_FORMAT_B8G8R8A8_UNORM;
 
   const std::vector<const char*> VAL_LAYERS = {
       "VK_LAYER_KHRONOS_validation"}; // This val layer leaks memory, cant get messages to show up that would justify

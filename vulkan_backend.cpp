@@ -146,7 +146,7 @@ void VkBackend::setupSwapchain(const sptr<VKUIX::Window>& window, Instance &inst
   vkGetPhysicalDeviceSurfaceFormatsKHR(instance.physDevice, instance.surface, &formatCount, formats.data());
 
   for (const VkSurfaceFormatKHR &format: formats) {
-    if (format.format == VK_FORMAT_R8G8B8A8_SRGB && format.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
+    if (format.format == VkBackend::COLOR_FORMAT && format.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
       instance.swapchain.surfaceFormat = format;
       break;
     }
@@ -430,7 +430,6 @@ void VkBackend::createDynamicGraphicsPipeline(const Instance &instance, Shader &
     LOG(F, "Could not create corresponding VkPipelineLayout for VkPipeline. Aborting VkPipeline creation.");
   }
 
-  VkFormat colorFormat = VK_FORMAT_R8G8B8A8_SRGB;
   VkFormat depthFormat = VK_FORMAT_D32_SFLOAT;
 
   std::array<VkPipelineShaderStageCreateInfo, 2> shaderStageInfos = shader.getShaderStageInfos();
@@ -489,7 +488,7 @@ void VkBackend::createDynamicGraphicsPipeline(const Instance &instance, Shader &
 
   VkPipelineRenderingCreateInfo renderingInfo{VK_STRUCTURE_TYPE_PIPELINE_RENDERING_CREATE_INFO};
   renderingInfo.colorAttachmentCount = 1;
-  renderingInfo.pColorAttachmentFormats = &colorFormat;
+  renderingInfo.pColorAttachmentFormats = &VkBackend::COLOR_FORMAT;
   renderingInfo.depthAttachmentFormat = depthFormat;
   renderingInfo.stencilAttachmentFormat = VK_FORMAT_UNDEFINED;
 

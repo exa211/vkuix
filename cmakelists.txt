@@ -41,6 +41,8 @@ add_executable(vkuix
   buffer.h
   vkuix.cpp
   vkuix.h
+  renderlist.cpp
+  renderlist.h
 )
 
 target_link_libraries(vkuix PRIVATE

@@ -1,11 +1,4 @@
-#include <iostream>
-#include <vector>
-
-#include "buffer.h"
 #include "vkuix.h"
-
-#include <glm/ext/matrix_clip_space.hpp>
-#include <glm/gtx/transform.hpp>
 
 int main() {
 
@@ -17,10 +10,9 @@ int main() {
   while (!glfwWindowShouldClose(window->getWindowPtr())) {
     glfwPollEvents();
 
-    const uptr<VKUIX::RenderList>& renderList = VKUIX::getRenderList(instance);
-    renderList->roundedRect(25, 25, 200, 50, 5.0f, 4);
-    renderList->rect(250, 25, 250, 30);
-    renderList->roundedRect(550, 25, 200, 50, 25.0f, 50);
+    const uptr<VKUIX::RenderList> &renderList = VKUIX::getRenderList(instance);
+    renderList->roundRect(10, 10, window->getExtent().width - 20, 50, {5}, 2, VKUIX::Color(41, 41, 43, 255));
+    renderList->roundRect(10, 70, 250, 450, {5}, 2, VKUIX::Color(41, 41, 41, 255));
 
     VKUIX::render(instance, window);
   }

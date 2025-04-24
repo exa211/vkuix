@@ -63,7 +63,7 @@ sptr<VKUIX::Instance> VKUIX::createInstance(const sptr<Window> &window, const st
   // Offscreen MSAA Antialiasing image
   instance->msaaImage.sampleCount = VkBackend::ANTI_ALIASING_COUNT;
   instance->msaaImage.extent = window->getExtent();
-  instance->msaaImage.format = VK_FORMAT_R8G8B8A8_SRGB;
+  instance->msaaImage.format = VkBackend::COLOR_FORMAT;
   VkBackend::createImage(instance->backend, instance->msaaImage);
 
   instance->renderList = std::make_unique<RenderList>();
