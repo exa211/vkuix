@@ -14,8 +14,8 @@ void VkBackend::setupInstance(Instance &instance, const std::vector<const char *
 
   // DEBUG CALLBACK
   VkDebugUtilsMessengerCreateInfoEXT debugInfo{VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT};
-  debugInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-  debugInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT;
+  debugInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_FLAG_BITS_MAX_ENUM_EXT;
+  debugInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_FLAG_BITS_MAX_ENUM_EXT;
   debugInfo.pfnUserCallback = debugCallback;
   debugInfo.pUserData = nullptr; // Maybe needed in the future
 
@@ -23,8 +23,10 @@ void VkBackend::setupInstance(Instance &instance, const std::vector<const char *
   instanceCreateInfo.pApplicationInfo = &appInfo;
   instanceCreateInfo.ppEnabledExtensionNames = extensions.data();
   instanceCreateInfo.enabledExtensionCount = extensions.size();
-  instanceCreateInfo.ppEnabledLayerNames = VAL_LAYERS.data();
-  instanceCreateInfo.enabledLayerCount = VAL_LAYERS.size();
+  if (VALIDATION) {
+    instanceCreateInfo.ppEnabledLayerNames = VAL_LAYERS.data();
+    instanceCreateInfo.enabledLayerCount = VAL_LAYERS.size();
+  }
   instanceCreateInfo.pNext = &debugInfo; // Custom debugger
 
   // Create VkInstance with custom debugger
@@ -449,13 +451,13 @@ void VkBackend::createDynamicGraphicsPipeline(const Instance &instance, Shader &
   raster.depthClampEnable = VK_FALSE;
   raster.depthBiasEnable = VK_FALSE;
   raster.rasterizerDiscardEnable = VK_FALSE;
-  raster.polygonMode = VK_POLYGON_MODE_LINE;
+  raster.polygonMode = VK_POLYGON_MODE_FILL;
   raster.cullMode = VK_CULL_MODE_BACK_BIT;
   raster.frontFace = VK_FRONT_FACE_CLOCKWISE;
   raster.lineWidth = 1.0f;
 
   VkPipelineMultisampleStateCreateInfo multisample{VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO};
-  multisample.rasterizationSamples = VK_SAMPLE_COUNT_4_BIT;
+  multisample.rasterizationSamples = ANTI_ALIASING_COUNT;
 
   VkPipelineDepthStencilStateCreateInfo depthStencil{VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO};
   depthStencil.depthTestEnable = VK_TRUE;

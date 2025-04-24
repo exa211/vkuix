@@ -51,6 +51,12 @@ namespace Buffers {
     vmaMapMemory(allocator, buffer.allocation, &tempData);
     memcpy(tempData, data.data(), data.size() * sizeof(data[0]));
     vmaUnmapMemory(allocator, buffer.allocation);
+    vmaFreeMemory(allocator, buffer.allocation);
+  }
+
+  template <typename T>
+  void freeBuffer(Buffer &buffer, VmaAllocator allocator) {
+
   }
 
 }

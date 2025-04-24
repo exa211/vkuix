@@ -11,12 +11,14 @@
 
 namespace VkBackend {
 
-  const std::vector VAL_LAYERS = {
-      "VK_LAYER_KHRONOS_validation"};
+  inline constexpr bool VALIDATION = false;
+  inline constexpr VkSampleCountFlagBits ANTI_ALIASING_COUNT = VK_SAMPLE_COUNT_8_BIT;
+
+  const std::vector<const char*> VAL_LAYERS = {
+      "VK_LAYER_KHRONOS_validation"}; // This val layer leaks memory, cant get messages to show up that would justify
 
   const std::vector DEVICE_EXT = {
       VK_KHR_SWAPCHAIN_EXTENSION_NAME,
-      VK_KHR_MAINTENANCE1_EXTENSION_NAME,
       VK_KHR_DYNAMIC_RENDERING_EXTENSION_NAME,
       VK_KHR_SYNCHRONIZATION_2_EXTENSION_NAME};
 
